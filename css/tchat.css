@@ -1,0 +1,92 @@
+
+body
+{
+    background-color: rgb(113, 203, 146, 0.789);
+    text-align: center;
+    margin: 25px;
+}
+
+.chat
+{
+    margin: 50px;
+    border-radius: 2%;
+    box-shadow: 5px 5px 25px #F30E13;
+}
+
+.list_members
+{
+    text-align: center;
+    height: 496px;
+    width: 250px;
+    float: left;
+    overflow: scroll;    
+}
+
+.status
+{
+    border-bottom: 1px solid #F30E13;
+    padding-bottom: 15px;
+}
+
+.log_out
+{
+    margin: 5px;
+    text-align: right;
+}
+
+section
+{
+    border: 1px solid #F30E13;
+}
+
+.log_in
+{
+    margin: 50px;
+    border: 0px;
+}
+
+.mess_list
+{
+    text-align: left;
+    margin-top: 270px;
+    overflow: scroll;
+    padding-left: 25px;
+    line-height: 25px;  
+}
+
+.mess_add
+{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 100px;
+}
+
+.users_status > .offline
+{
+    color: grey;
+}
+
+.logo_chat
+{
+    float: left;
+    padding-left: 25px;
+    margin-left: 0px;
+}
+
+.logo
+{
+    width: 200px;
+    height: auto;
+}
+
+.alice
+{
+    float: right;
+    margin-bottom: 25px;
+}
+
+.aliza
+{
+    float: left;
+    margin-bottom: 25px;
+}
