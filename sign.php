@@ -2,6 +2,8 @@
 
 <?php
 
+session_start();
+
 // =============================================== Connexion SQL =============================================================
 
 try 
@@ -12,62 +14,47 @@ catch(Exception $erreur) {
     die('Erreur: ' .$erreur->getMessage());
 }
 
-//Hashing Password
-
-// $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-// Add New User
-
-// if(isset($_POST["password"]) && ($_POST["password2"])) // verification que les champs mdp sont remplit
-// {
-//     $password=$_POST["password"];
-//     add_user($password);
-// }
-
-// if (isset($_POST['login'])) {
-//     echo filter_var($_POST['login'], FILTER_SANITIZE_STRING);
-//     echo "<br/><br/>";
-// }
-
-// if (isset($_POST['password'])) {
-//     echo filter_var($_POST['password'], FILTER_SANITIZE_STRING);
-//     echo "<br/><br/>";
-// }
-
-// if (isset($_POST['email'])) {
-//     echo filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-//     echo "<br/><br/>";
-// }
-
-
-// ================================================ Verification de doublons ==================================================
+// ======================================================= Send Sign Request ==================================================
 
 if(isset($_POST['submit']) && !empty($_POST['login']) && !empty($_POST['password']) && !empty($_POST['email']))
 {
+// ====================================================== Sanitisation ========================================================
+
+    $_POST['login'] = filter_var($_POST['login'],FILTER_SANITIZE_STRING);
+    $_POST['password'] = filter_var($_POST['password'],FILTER_SANITIZE_STRING);
+    $_POST['email'] = filter_var($_POST['email'],FILTER_SANITIZE_STRING);
+
     $login = htmlspecialchars($_POST['login']);
+    $email = htmlspecialchars($_POST['email']);
+
 //==================================================== Hashing Password =======================================================
+
     $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $mail = htmlspecialchars($_POST['email']);
-    global $bdd;
+    
+    global $db;
+
+//==================================================== Verification Doublon ===================================================
 
     $Verif_mail = $db->prepare('SELECT * FROM users WHERE email = ?');
             $Verif_mail->execute(array($email));
-            $Already_use_email = $Verif_mail->rowcount();
+            $Already_used_email = $Verif_mail->rowcount();
 
     $Verif_login = $db->prepare('SELECT * FROM users WHERE login = ?');
             $Verif_login->execute(array($login));
-            $already_use_login = $Verif_login->rowcount();
+            $already_used_login = $Verif_login->rowcount();
 
-    if($already_use_login == 0)
+    if($already_used_login == 0)
     {
-        if($Already_use_email == 0)
+        if($Already_used_email == 0)
         {
+//==================================================== Add New User ============================================================
+
             $add_user= $db->prepare("INSERT INTO users (login, password, email) VALUES ('".$login."', '".$password_hash."','".$email."')");
             $add_user->execute(array(
                 "login" => $login, 
                 "password" => $password_hash, 
                 "email" => $email));
-                header('location: index.php');
+                header('location: tchat.php');
         }       
         else 
         {
@@ -82,8 +69,7 @@ if(isset($_POST['submit']) && !empty($_POST['login']) && !empty($_POST['password
 else
 {
 $erreur = "Tous les champs ne sont pas remplit!";
-}                 
-
+}
 ?>
 
 <!-- ==================================================== HTML ======================================================== -->
